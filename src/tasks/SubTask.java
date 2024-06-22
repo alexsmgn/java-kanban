@@ -1,9 +1,11 @@
+package tasks;
+
 public class SubTask extends Task {
 
-    private int epicId;
+    private final int epicId;
 
     public SubTask(int id, String title, String target, int epicId) {
-        super(id, title, target, Status.NEW);
+        super(id, title, target);
         this.epicId = epicId;
     }
 
@@ -11,9 +13,7 @@ public class SubTask extends Task {
         return epicId;
     }
 
-    public void setEpicId(int epicId) {
-        this.epicId = epicId;
-    }
+
 
 
 

@@ -1,14 +1,18 @@
-public class Task {
+package tasks;
+
+import status.Status;
+
+public class Task  {
     private int id;
     private String title;
     private String target;
     private Status status;
 
-    public Task(int id, String title, String target, Status status) {
+    public Task(int id, String title, String target) {
         this.id = id;
         this.title = title;
         this.target = target;
-        this.status = status;
+        status = status.NEW;
     }
 
 
@@ -45,7 +49,7 @@ public class Task {
     }
 
 
-    public enum Status {NEW, IN_PROGRESS, DONE}
+
 
     @Override
     public String toString() {
