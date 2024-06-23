@@ -8,8 +8,7 @@ public class Task  {
     private String target;
     private Status status;
 
-    public Task(int id, String title, String target) {
-        this.id = id;
+    public Task(String title, String target) {
         this.title = title;
         this.target = target;
         status = status.NEW;
