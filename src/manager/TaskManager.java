@@ -15,10 +15,6 @@ public class TaskManager {
     private final HashMap<Integer, Epic> epics = new HashMap<>();
     private final HashMap<Integer, SimpleTask> simpleTasks = new HashMap<>();
 
-    public int getNextId() {
-        return nextId;
-    }
-
     public void addTask(SimpleTask simpleTask) {
         nextId++;
         simpleTask.setId(nextId);
@@ -29,15 +25,14 @@ public class TaskManager {
     public void addEpic(Epic epic) {
         nextId++;
         epic.setId(nextId);
-
         epics.put(epic.getId(), epic);
     }
 
     public void addSubTask(SubTask subTask) {
-        nextId++;
-        subTask.setId(nextId);
         Epic epic = epics.get(subTask.getEpicId());
         if (epic != null) {
+            nextId++;
+            subTask.setId(nextId);
             subTasks.put(subTask.getId(), subTask);
             epic.setSubTaskIds(nextId);
             updateEpicStatus(epic);
@@ -57,7 +52,7 @@ public class TaskManager {
             return;
         }
         Epic epic = epics.get(newSubTask.getEpicId());
-        if (epic == null || !epics.containsKey(epic.getId())) {
+        if (newSubTask.getEpicId()!=subTasks.get(newSubTask.getId()).getEpicId()) {
             return;
         }
         subTasks.replace(newSubTask.getId(), newSubTask);
@@ -65,12 +60,11 @@ public class TaskManager {
     }
 
     public void updateEpic (Epic epic) {
-
         if (epics.containsKey(epic.getId())) {
-            Epic newEpic = new Epic(epic.getTitle(), epic.getTarget());
-            epics.remove(epic.getId(), epic);
-            epics.put(newEpic.getId(), newEpic);
-            updateEpicStatus(epic);
+            String newTitle = epic.getTitle();
+            String newTarget = epic.getTarget();
+            epics.get(epic.getId()).setTitle(newTitle);
+            epics.get(epic.getId()).setTarget(newTarget);
         }
     }
 
@@ -83,8 +77,8 @@ public class TaskManager {
         if (epic != null) {
             for (Integer taskId : epic.getSubTaskIds()) {
                 subTasks.remove(taskId);
-                epics.remove(nextId);
             }
+            epics.remove(nextId);
         }
     }
 
@@ -111,12 +105,12 @@ public class TaskManager {
     public void clearAllSubTasks() {
         subTasks.clear();
         for(Epic epic: epics.values()) {
-            epic.getSubTaskIds().clear();
+            epic.remAllSubTasks();
             updateEpicStatus(epic);
         }
     }
 
-    public void updateEpicStatus(Epic epic) {
+    void updateEpicStatus(Epic epic) {
         if (!epics.containsKey(epic.getId())) {
             return;
         }

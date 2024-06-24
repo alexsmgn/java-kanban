@@ -61,19 +61,6 @@ public class Main {
         for(Epic epic: taskManager.printAllEpics()) {
             System.out.println(epic);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
 
