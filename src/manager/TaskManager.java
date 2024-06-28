@@ -37,11 +37,11 @@ public interface TaskManager {
 
     void updateEpicStatus(Epic epic);
 
-    ArrayList<Task> printAllSimpleTasks();
+    List<Task> printAllSimpleTasks();
 
-    ArrayList<Epic> printAllEpics();
+    List<Epic> printAllEpics();
 
-    ArrayList<SubTask> printAllSubTasks();
+    List<SubTask> printAllSubTasks();
 
     SimpleTask printSimpleTaskById(int nextId);
 
@@ -49,9 +49,9 @@ public interface TaskManager {
 
     SubTask printSubTaskById(int nextId);
 
-    ArrayList<SubTask> printSubTasksByEpicId(int nextId);
+    List<SubTask> printSubTasksByEpicId(int nextId);
 
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
 
 
 }
