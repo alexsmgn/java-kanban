@@ -58,7 +58,6 @@ class LinkedList {
         else
             head = newNode;
         customMap.put(id, newNode);
-
     }
 
     public List<Task> getTaskList() {
@@ -70,7 +69,6 @@ class LinkedList {
         }
         return list;
     }
-
 
     public void removeNode(Node node) {
         if (node != null) {
