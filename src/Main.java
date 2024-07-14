@@ -58,6 +58,20 @@ public class Main {
         SubTask subTask = inMemoryTaskManager.printSubTaskById(3);
         System.out.println(subTask);
 
+        System.out.println("Печать истории");
+        for(Task history : inMemoryTaskManager.getHistory()) {
+            System.out.println(history);
+        }
+
+        System.out.println("Печать задачи по ИД");
+        SimpleTask task1 = inMemoryTaskManager.printSimpleTaskById(7);
+        System.out.println(task1);
+
+        System.out.println("Печать истории");
+        for(Task history : inMemoryTaskManager.getHistory()) {
+            System.out.println(history);
+        }
+
         System.out.println("удаление задачи по ИД");
         inMemoryTaskManager.delSimpleTaskById(7);
         System.out.println("список всех задач");
