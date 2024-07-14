@@ -28,7 +28,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         Node node = history.customMap.remove(id);
         history.removeNode(node);
     }
-
 }
 
 class LinkedList {
