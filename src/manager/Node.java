@@ -1,6 +1,8 @@
 package manager;
+
 import tasks.Task;
-public class Node <T> {
+
+public class Node<T> {
 
     public tasks.Task task;
     public Node<tasks.Task> prev;

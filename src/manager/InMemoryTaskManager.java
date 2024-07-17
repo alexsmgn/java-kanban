@@ -5,6 +5,7 @@ import tasks.SimpleTask;
 import tasks.Epic;
 import tasks.SubTask;
 import status.Status;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     private final HistoryManager historyManager;
 
-    public InMemoryTaskManager () {
+    public InMemoryTaskManager() {
         historyManager = Managers.getDefaultHistory();
         nextId = 0;
         subTasks = new HashMap<>();
@@ -69,7 +70,7 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
         Epic epic = epics.get(newSubTask.getEpicId());
-        if (newSubTask.getEpicId()!=subTasks.get(newSubTask.getId()).getEpicId()) {
+        if (newSubTask.getEpicId() != subTasks.get(newSubTask.getId()).getEpicId()) {
             return;
         }
         subTasks.replace(newSubTask.getId(), newSubTask);
@@ -107,7 +108,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void delSubTaskById(int nextId) {
         SubTask subTask = subTasks.get(nextId);
-        if(subTask != null) {
+        if (subTask != null) {
             Epic epic = epics.get(subTask.getEpicId());
             epic.remSubtask(subTask);
             updateEpicStatus(epic);
@@ -131,7 +132,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void clearAllSubTasks() {
         subTasks.clear();
-        for(Epic epic: epics.values()) {
+        for (Epic epic : epics.values()) {
             epic.remAllSubTasks();
             updateEpicStatus(epic);
         }
@@ -213,7 +214,7 @@ public class InMemoryTaskManager implements TaskManager {
         ArrayList<SubTask> subTasksNew = new ArrayList<>();
         Epic epic = epics.get(nextId);
         if (epic != null) {
-            for(Integer subTaskId : epic.getSubTaskIds()) {
+            for (Integer subTaskId : epic.getSubTaskIds()) {
                 subTasksNew.add(subTasks.get(subTaskId));
             }
         }

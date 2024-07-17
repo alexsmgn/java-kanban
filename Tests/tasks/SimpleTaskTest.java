@@ -19,5 +19,5 @@ class SimpleTaskTest {
         inMemoryTaskManager.addTask(simpleTask1);
         simpleTask1.setId(1);
         assertEquals(simpleTask, simpleTask1, "Это не одна задача");
-}
+    }
 }

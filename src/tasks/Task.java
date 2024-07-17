@@ -2,7 +2,7 @@ package tasks;
 
 import status.Status;
 
-public class Task  {
+public class Task {
     private int id;
     private String title;
     private String target;
@@ -46,8 +46,6 @@ public class Task  {
     public void setStatus(Status status) {
         this.status = status;
     }
-
-
 
 
     @Override
