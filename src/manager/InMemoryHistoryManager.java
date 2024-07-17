@@ -31,7 +31,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 }
 
-class LinkedList {
+public class LinkedList {
 
     int id;
     private Node<Task> head;
