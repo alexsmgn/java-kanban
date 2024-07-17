@@ -3,6 +3,7 @@ package manager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import tasks.Task;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +14,6 @@ class InMemoryHistoryManagerTest {
     private final HistoryManager historyManager = new InMemoryHistoryManager();
     static List<Task> history;
     static Task task;
-
-
 
     @BeforeAll
     static void createTask() {
