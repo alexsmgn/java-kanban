@@ -8,37 +8,25 @@ import java.util.List;
 
 public class LinkedList {
 
-    int id;
-    private Node<Task> head;
-    private Node<Task> tail;
+    private Node head;
+    private Node tail;
 
-    public HashMap<Integer, Node<Task>> customMap = new HashMap<>();
+    final HashMap<Integer, Node> customMap = new HashMap<>();
 
-    public void addFirst(Task element) {
-        final Node<Task> oldHead = head;
-        final Node<Task> newNode = new Node<>(null, element, oldHead);
-        head = newNode;
-        if (oldHead == null)
-            tail = newNode;
-        else
-            oldHead.prev = newNode;
-    }
-
-    public void addLast(Task element) {
-        id = element.getId();
-        final Node<Task> oldTail = tail;
-        final Node<Task> newNode = new Node<>(tail, element, null);
-        tail = newNode;
-        if (oldTail != null)
-            oldTail.next = newNode;
-        else
+    public void addLast(Task task) {
+        Node newNode = new Node(task, tail, null);
+        if (tail == null) {
             head = newNode;
-        customMap.put(id, newNode);
+        } else {
+            tail.next = newNode;
+        }
+        tail = newNode;
+        customMap.put(task.getId(), newNode);
     }
 
     public List<Task> getTaskList() {
         List<Task> list = new ArrayList<>();
-        Node<Task> element = head;
+        Node element = head;
         while (element != null) {
             list.add(element.task);
             element = element.next;

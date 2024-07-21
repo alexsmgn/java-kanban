@@ -3,8 +3,6 @@ package tasks;
 import manager.InMemoryTaskManager;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class SimpleTaskTest {
@@ -13,7 +11,7 @@ class SimpleTaskTest {
     @Test
     public void equalSimpleTaskId() {
         SimpleTask simpleTask = new SimpleTask("Title", "Target");
-        SimpleTask simpleTask1 = new SimpleTask("Title", "Target");
+        SimpleTask simpleTask1 = new SimpleTask("Title1", "Target1");
 
         inMemoryTaskManager.addTask(simpleTask);
         inMemoryTaskManager.addTask(simpleTask1);

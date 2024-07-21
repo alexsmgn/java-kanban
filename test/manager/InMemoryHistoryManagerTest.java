@@ -14,11 +14,16 @@ class InMemoryHistoryManagerTest {
     private final HistoryManager historyManager = new InMemoryHistoryManager();
     static List<Task> history;
     static Task task;
+    static Task task1;
 
     @BeforeAll
     static void createTask() {
         task = new Task("title", "target");
+        task1 = new Task("title", "target");
         history = new ArrayList<>();
+
+        task.setId(1);
+        task1.setId(2);
     }
 
     @Test
@@ -31,13 +36,10 @@ class InMemoryHistoryManagerTest {
 
     @Test
     void remove() {
-        task.setId(1);
         historyManager.add(task);
-        assertNotNull(history, "История не пустая.");
-        historyManager.remove(1);
-        history = historyManager.getHistory();
-        assertTrue(history.contains(task), "Задача удалена.");
+        historyManager.add(task1);
+        historyManager.remove(task.getId());
 
-
+        assertEquals(historyManager.getHistory(), List.of(task1));
     }
 }

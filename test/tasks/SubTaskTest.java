@@ -17,7 +17,7 @@ class SubTaskTest {
 
         inMemoryTaskManager.addSubTask(subTask);
         inMemoryTaskManager.addSubTask(subTask1);
-        subTask1.setId(1);
+        subTask1.setId(0);
         assertEquals(subTask, subTask1, "Это не одна задача");
     }
 }
