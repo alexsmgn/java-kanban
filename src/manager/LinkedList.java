@@ -15,13 +15,15 @@ public class LinkedList {
 
     public void addLast(Task task) {
         Node newNode = new Node(task, tail, null);
-        if (tail == null) {
-            head = newNode;
-        } else {
-            tail.next = newNode;
+        if (task != null) {
+            if (tail == null) {
+                head = newNode;
+            } else {
+                tail.next = newNode;
+            }
+            tail = newNode;
+            customMap.put(task.getId(), newNode);
         }
-        tail = newNode;
-        customMap.put(task.getId(), newNode);
     }
 
     public List<Task> getTaskList() {
@@ -47,15 +49,20 @@ public class LinkedList {
                 next.prev = prev;
             }
 
-            node.prev = null;
             node.next = null;
 
-            if (node == head) {
-                head = next;
+            if (head != null) {
+                if (node == head) {
+                    head = next;
+                }
             }
-            if (node == tail) {
-                tail = prev;
+
+            if (tail != null) {
+                if (node == tail) {
+                    tail = prev;
+                }
             }
         }
     }
 }
+
