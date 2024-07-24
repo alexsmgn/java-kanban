@@ -52,13 +52,13 @@ public class LinkedList {
 
             if (head != null) {
                 if (node == head) {
-                    head = next;
+                    head.prev = next;
                 }
             }
 
             if (tail != null) {
                 if (node == tail) {
-                    tail = prev;
+                    tail.next = prev;
                 }
             }
         }
