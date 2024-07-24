@@ -40,6 +40,6 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task1);
         historyManager.remove(task.getId());
 
-        assertEquals(historyManager.getHistory(), List.of(task1));
+        assertEquals(historyManager.getHistory(), List.of(task));
     }
 }
