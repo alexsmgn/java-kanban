@@ -1,6 +1,7 @@
 package manager;
 
 import tasks.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,17 +49,17 @@ public class LinkedList {
                 next.prev = prev;
             }
 
-            node.next = null;
-
-            if (head != null) {
-                if (node == head) {
-                    head.prev = next;
+            if (node == head) {
+                head = next;
+                if (head != null) {
+                    head.prev = null;
                 }
             }
 
-            if (tail != null) {
-                if (node == tail) {
-                    tail.next = prev;
+            if (node == tail) {
+                tail = prev;
+                if (tail != null) {
+                    tail.next = null;
                 }
             }
         }
