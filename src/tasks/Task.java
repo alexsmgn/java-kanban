@@ -2,7 +2,9 @@ package tasks;
 
 import status.Status;
 
-public class Task  {
+import java.util.Objects;
+
+public class Task {
     private int id;
     private String title;
     private String target;
@@ -48,8 +50,6 @@ public class Task  {
     }
 
 
-
-
     @Override
     public String toString() {
         return "Task{" +
@@ -58,5 +58,18 @@ public class Task  {
                 ", target='" + target + '\'' +
                 ", status=" + status +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return id == task.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }
