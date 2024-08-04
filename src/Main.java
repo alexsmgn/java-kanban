@@ -1,16 +1,35 @@
-import manager.InMemoryHistoryManager;
-import manager.Managers;
-import manager.TaskManager;
-import tasks.Task;
+import manager.FileBackedTaskManager;
 import tasks.SimpleTask;
 import tasks.Epic;
 import tasks.SubTask;
-import manager.InMemoryTaskManager;
+
+import java.io.File;
 
 public class Main {
 
     public static void main(String[] args) {
 
+        File file = new File("Tasks.csv");
+        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(file);
+
+
+        SimpleTask simpleTask1 = new SimpleTask("Ремонт пк", "Отдать в сервис блок питания");
+        fileBackedTaskManager.addTask(simpleTask1);
+
+
+        Epic epic1 = new Epic("Ремонт в квартире", "Ремонт ванной комнаты");
+        fileBackedTaskManager.addEpic(epic1);
+
+        SubTask subTask1 = new SubTask("Ремонт в туалете", "Купить плитку", 2);
+        fileBackedTaskManager.addSubTask(subTask1);
+
+
+        System.out.println(fileBackedTaskManager.printAllSimpleTasks());
+        System.out.println(fileBackedTaskManager.printAllEpics());
+        System.out.println(fileBackedTaskManager.printAllSubTasks());
+
+
+        /*
         TaskManager taskManager = Managers.getDefault();
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
@@ -98,8 +117,8 @@ public class Main {
             System.out.println(history);
         }
 
+         */
+
     }
-
-
 }
 
