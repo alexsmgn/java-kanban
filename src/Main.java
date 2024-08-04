@@ -20,7 +20,7 @@ public class Main {
         Epic epic1 = new Epic("Ремонт в квартире", "Ремонт ванной комнаты");
         fileBackedTaskManager.addEpic(epic1);
 
-        SubTask subTask1 = new SubTask("Ремонт в туалете", "Купить плитку", 2);
+        SubTask subTask1 = new SubTask("Ремонт в туалете", "Купить плиточный клей", 2);
         fileBackedTaskManager.addSubTask(subTask1);
 
 
