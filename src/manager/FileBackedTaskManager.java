@@ -22,7 +22,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.file = file;
     }
 
-    protected static Task fromString(String value) {
+    private static Task fromString(String value) {
         String[] arrays = value.split(",");
         int id = Integer.parseInt(arrays[0]);
         String type = arrays[1];
@@ -47,7 +47,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return "";
     }
 
-    protected static String toString(Task task) {
+    private static String toString(Task task) {
         return task.getId() + "," +
                 task.getType() + "," +
                 task.getTitle() + "," +
@@ -99,8 +99,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     fileLoader.epics.put(task.getId(), (Epic) task);
                 } else if (task.getType().equals(Tasks.SUBTASK)) {
                     fileLoader.subTasks.put(task.getId(), (SubTask) task);
+                    fileLoader.epics.get(((SubTask) task).getEpicId()).setSubTaskIds(task.getId());
                 } else {
                     fileLoader.simpleTasks.put(task.getId(), (SimpleTask) task);
+                }
+                if (fileLoader.nextId < task.getId()) {
+                    fileLoader.nextId = task.getId();
                 }
             }
         } catch (IOException e) {
@@ -130,4 +134,39 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return epic.getId();
     }
 
+    @Override
+    public void delSimpleTaskById(int nextId) {
+        super.delSimpleTaskById(nextId);
+        save();
+    }
+
+    @Override
+    public void delEpicById(int nextId) {
+        super.delEpicById(nextId);
+        save();
+    }
+
+    @Override
+    public void delSubTaskById(int nextId) {
+        super.delSubTaskById(nextId);
+        save();
+    }
+
+    @Override
+    public void clearAllTasks() {
+        super.clearAllTasks();
+        save();
+    }
+
+    @Override
+    public void clearAllEpics() {
+        super.clearAllEpics();
+        save();
+    }
+
+    @Override
+    public void clearAllSubTasks() {
+        super.clearAllSubTasks();
+        save();
+    }
 }

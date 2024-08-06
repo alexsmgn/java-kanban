@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private int nextId;
+    protected int nextId;
     protected final Map<Integer, SubTask> subTasks;
     protected final Map<Integer, Epic> epics;
     protected final Map<Integer, SimpleTask> simpleTasks;
@@ -21,12 +21,13 @@ public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager historyManager;
 
     public InMemoryTaskManager() {
-        historyManager = Managers.getDefaultHistory();
+        historyManager = new InMemoryHistoryManager();
         nextId = 0;
         subTasks = new HashMap<>();
         epics = new HashMap<>();
         simpleTasks = new HashMap<>();
     }
+
 
     @Override
     public int addTask(SimpleTask simpleTask) {
