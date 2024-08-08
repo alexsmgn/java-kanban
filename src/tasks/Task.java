@@ -16,6 +16,25 @@ public class Task {
         status = status.NEW;
     }
 
+    public Task(String target, String title, Status status) {
+        this.title = title;
+        this.status = status;
+        this.target = target;
+    }
+
+    public Task(int id, String title, Status status, String target) {
+        this.id = id;
+        this.title = title;
+        this.status = status;
+        this.target = target;
+    }
+
+    public Task(String title, Status status, String target) {
+        this.title = title;
+        this.status = status;
+        this.target = target;
+
+    }
 
     public int getId() {
         return id;
@@ -49,6 +68,9 @@ public class Task {
         this.status = status;
     }
 
+    public Tasks getType() {
+        return Tasks.SIMPLETASK;
+    }
 
     @Override
     public String toString() {
