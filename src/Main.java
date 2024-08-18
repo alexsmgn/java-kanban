@@ -17,29 +17,34 @@ public class Main {
 
         SimpleTask simpleTask1 = new SimpleTask("Работа на дому", "программирование с 19:00 - 23:00");
         simpleTask1.setStartTime(LocalDateTime.now());
-        simpleTask1.setDuration(Duration.ofHours(4));
+        simpleTask1.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.addTask(simpleTask1);
 
 
         Epic epic1 = new Epic("Ремонт в квартире", "Ремонт ванной комнаты");
-        epic1.setStartTime(LocalDateTime.now().plusDays(2));
-        epic1.setDuration(Duration.ofHours(4));
+        epic1.setStartTime(LocalDateTime.now().plusHours(2));
+        epic1.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.addEpic(epic1);
 
         SubTask subTask1 = new SubTask("Установить полотенцесушитель", "организация отопления", 2);
-        subTask1.setStartTime(LocalDateTime.now().plusDays(2));
-        subTask1.setDuration(Duration.ofHours(2));
+        subTask1.setStartTime(LocalDateTime.now().plusHours(4));
+        subTask1.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.addSubTask(subTask1);
 
         SubTask subTask2 = new SubTask("Установить раковину", "организация зоны для умывания", 2);
-        subTask2.setStartTime(LocalDateTime.now().plusDays(2).plusHours(2));
-        subTask2.setDuration(Duration.ofHours(2));
+        subTask2.setStartTime(LocalDateTime.now().plusHours(6));
+        subTask2.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.addSubTask(subTask2);
 
         System.out.println(fileBackedTaskManager.printAllSimpleTasks());
         System.out.println(fileBackedTaskManager.printAllEpics());
         System.out.println(fileBackedTaskManager.printAllSubTasks());
 
+        SimpleTask simpleTask2 = new SimpleTask("Работы на дому", "програмирование");
+        simpleTask2.setId(1);
+        simpleTask2.setStartTime(LocalDateTime.now().plusHours(10));
+        simpleTask2.setDuration(Duration.ofMinutes(15));
+        fileBackedTaskManager.updateSimpleTask(simpleTask2);
 
         /*
         TaskManager taskManager = Managers.getDefault();

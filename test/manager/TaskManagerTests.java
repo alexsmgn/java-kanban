@@ -24,7 +24,7 @@ abstract class TaskManagerTests<T extends TaskManager> {
 
     @BeforeEach
     void beforeEach() {
-        simpleTask = new SimpleTask("Title", "Target");
+        simpleTask = new SimpleTask("Target", "Title");
         simpleTask.setStartTime(LocalDateTime.now());
         simpleTask.setDuration(Duration.ofHours(4));
 
@@ -47,7 +47,7 @@ abstract class TaskManagerTests<T extends TaskManager> {
 
         assertNotNull(simpleTasks, "Задачи не возвращаются");
         assertEquals(1, simpleTasks.size(), "Не верное количество задач");
-        assertEquals(simpleTask, simpleTasks.get(0), "Задачи не совпадают");
+        assertEquals(simpleTask, simpleTasks.getFirst(), "Задачи не совпадают");
     }
 
     @Test
@@ -62,12 +62,14 @@ abstract class TaskManagerTests<T extends TaskManager> {
 
         assertNotNull(epics, "Задачи не возвращаются");
         assertEquals(1, epics.size(), "Не верное количество эпиков");
-        assertEquals(epic, epics.get(0), "Задачи не совпадают");
+        assertEquals(epic, epics.getFirst(), "Задачи не совпадают");
     }
 
     @Test
     void addSubTask() {
+        taskManager.addTask(simpleTask);
         taskManager.addEpic(epic);
+
         final int subTaskId = taskManager.addSubTask(subTask);
         final SubTask savedSubTask = taskManager.printSubTaskById(subTaskId);
 
@@ -78,7 +80,7 @@ abstract class TaskManagerTests<T extends TaskManager> {
 
         assertNotNull(subTasks, "Задачи не возвращаются");
         assertEquals(1, subTasks.size(), "Не верное количество задач");
-        assertEquals(subTask, subTasks.get(0), "Задачи не совпадают");
+        assertEquals(subTask, subTasks.getFirst(), "Задачи не совпадают");
     }
 
     @Test

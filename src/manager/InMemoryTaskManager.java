@@ -331,7 +331,7 @@ public class InMemoryTaskManager implements TaskManager {
             }
             boolean taskOverlay = checkTimeOverlay(task, listTask);
             if (taskOverlay) {
-                throw new ManagerSaveException("Задачи" + task.getId() + " и " + listTask.getId() + "пересекаются");
+                throw new ManagerSaveException("Задачи " + task.getId() + " и " + listTask.getId() + " пересекаются");
             }
         }
     }

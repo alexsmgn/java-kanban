@@ -27,7 +27,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.file = file;
     }
 
-    static DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd,MM,yyyy");
+    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy,HH:mm");
+    static DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     static DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
 
     private static Task fromString(String value) {
@@ -61,14 +62,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private static String toString(Task task) {
+
+        String startTime = task.getStartTime() != null ? task.getStartTime().format(formatter) : "";
+        String endTime = task.getEndTime() != null ? task.getEndTime().format(formatter) : "";
+        String duration = task.getDuration() != null ? String.valueOf(task.getDuration().toMinutes()) : "";
+
         return task.getId() + "," +
                 task.getType() + "," +
                 task.getTitle() + "," +
                 task.getStatus() + "," +
                 task.getTarget() + "," +
-                task.getStartTime() + "," +
-                task.getEndTime() + "," +
-                task.getDuration() + "," +
+                startTime + "," +
+                endTime + "," +
+                duration + "," +
                 getIdFromEpic(task);
     }
 
