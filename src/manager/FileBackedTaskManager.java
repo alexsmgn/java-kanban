@@ -12,6 +12,11 @@ import java.io.FileWriter;
 
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -22,6 +27,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.file = file;
     }
 
+    static DateTimeFormatter formatterDate = DateTimeFormatter.ofPattern("dd,MM,yyyy");
+    static DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm");
+
     private static Task fromString(String value) {
         String[] arrays = value.split(",");
         int id = Integer.parseInt(arrays[0]);
@@ -29,14 +37,19 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String name = arrays[2];
         Status status = Status.valueOf(arrays[3]);
         String description = arrays[4];
+        LocalDateTime startTime = LocalDateTime.of(LocalDate.parse(arrays[5], formatterDate),
+                LocalTime.parse(arrays[6], formatterTime));
+        Duration duration = Duration.ofMinutes(Long.parseLong(arrays[9]));
 
         if (type.equals("EPIC")) {
-            return new Epic(id, name, status, description);
+            LocalDateTime epicEndTime = LocalDateTime.of(LocalDate.parse(arrays[7], formatterDate),
+                    LocalTime.parse(arrays[8], formatterTime));
+            return new Epic(id, name, status, description, startTime, epicEndTime, duration);
         } else if (type.equals("SUBTASK")) {
-            int epicId = Integer.parseInt(arrays[5]);
-            return new SubTask(id, name, status, description, epicId);
+            int epicId = Integer.parseInt(arrays[10]);
+            return new SubTask(id, name, status, description, startTime, duration, epicId);
         } else {
-            return new SimpleTask(id, name, status, description);
+            return new SimpleTask(id, name, status, description, startTime, duration);
         }
     }
 
@@ -53,6 +66,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 task.getTitle() + "," +
                 task.getStatus() + "," +
                 task.getTarget() + "," +
+                task.getStartTime() + "," +
+                task.getEndTime() + "," +
+                task.getDuration() + "," +
                 getIdFromEpic(task);
     }
 
@@ -68,7 +84,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
 
         try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
-            fileWriter.write("id,type,name,status,description,epic\n");
+            fileWriter.write("id,type,name,status,description,start, end, duration, epic\n");
             for (Task simpleTask : printAllSimpleTasks()) {
                 fileWriter.write(toString(simpleTask) + "\n");
             }
@@ -106,9 +122,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (fileLoader.nextId < task.getId()) {
                     fileLoader.nextId = task.getId();
                 }
+                fileLoader.addPrioritized(task);
             }
         } catch (IOException e) {
-            throw new ManagerSaveException("Не удалось загрузить файл");
+            //throw new ManagerSaveException("Не удалось загрузить файл");
         }
         return fileLoader;
     }
