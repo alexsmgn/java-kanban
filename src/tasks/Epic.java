@@ -9,9 +9,7 @@ import java.util.ArrayList;
 public class Epic extends Task {
 
     private final ArrayList<Integer> subTaskIds = new ArrayList<>();
-    //private LocalDateTime startTime;
     private LocalDateTime endTime;
-    //private Duration duration;
 
     public Epic(String target, String title) {
         super(title, target);
@@ -24,7 +22,7 @@ public class Epic extends Task {
     }
 
     public Epic(String target, String title, Status status) {
-       super(target, title, status);
+        super(target, title, status);
     }
 
     public ArrayList<Integer> getSubTaskIds() {

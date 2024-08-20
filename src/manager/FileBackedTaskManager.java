@@ -22,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private final File file;
+    private static final String HEADER = "id,type,name,status,description,start,end,duration,epic\n";
 
     public FileBackedTaskManager(File file) {
         this.file = file;
@@ -52,6 +53,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         } else {
             return new SimpleTask(id, name, status, description, startTime, duration);
         }
+
     }
 
     private static String getIdFromEpic(Task task) {
@@ -78,36 +80,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 getIdFromEpic(task);
     }
 
-    private void save() {
-
-        try {
-            if (Files.exists(file.toPath())) {
-                Files.delete(file.toPath());
-            }
-            Files.createFile(file.toPath());
-        } catch (IOException e) {
-            throw new ManagerSaveException("Файл для сохранения отсутствует");
-        }
-
-        try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
-            fileWriter.write("id,type,name,status,description,start, end, duration, epic\n");
-            for (Task simpleTask : printAllSimpleTasks()) {
-                fileWriter.write(toString(simpleTask) + "\n");
-            }
-
-            for (Epic epic : printAllEpics()) {
-                fileWriter.write(toString(epic) + "\n");
-            }
-
-            for (SubTask subTask : printAllSubTasks()) {
-                fileWriter.write(toString(subTask) + "\n");
-            }
-
-        } catch (IOException e) {
-            throw new ManagerSaveException("Не удалось сохранить задачи в файл");
-        }
-    }
-
     public static FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager fileLoader = new FileBackedTaskManager(file);
         try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
@@ -131,9 +103,39 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 fileLoader.addPrioritized(task);
             }
         } catch (IOException e) {
-            //throw new ManagerSaveException("Не удалось загрузить файл");
+             throw new ManagerSaveException("Не удалось загрузить файл");
         }
         return fileLoader;
+    }
+
+    private void save() {
+        try {
+            if (Files.exists(file.toPath())) {
+                Files.delete(file.toPath());
+            } else {
+                Files.createFile(file.toPath());
+            }
+        } catch (IOException e) {
+            throw new ManagerSaveException("Файл для сохранения отсутствует");
+        }
+
+        try (FileWriter fileWriter = new FileWriter(file, StandardCharsets.UTF_8)) {
+            fileWriter.write(HEADER);
+            for (Task simpleTask : printAllSimpleTasks()) {
+                fileWriter.write(toString(simpleTask) + "\n");
+            }
+
+            for (Epic epic : printAllEpics()) {
+                fileWriter.write(toString(epic) + "\n");
+            }
+
+            for (SubTask subTask : printAllSubTasks()) {
+                fileWriter.write(toString(subTask) + "\n");
+            }
+
+        } catch (IOException e) {
+            throw new ManagerSaveException("Не удалось сохранить задачи в файл");
+        }
     }
 
     @Override

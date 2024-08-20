@@ -30,10 +30,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int addTask(SimpleTask simpleTask) {
+        validateTask(simpleTask);
         nextId++;
         simpleTask.setId(nextId);
         simpleTasks.put(simpleTask.getId(), simpleTask);
-        validateTask(simpleTask);
         addPrioritized(simpleTask);
         return simpleTask.getId();
     }
@@ -57,7 +57,7 @@ public class InMemoryTaskManager implements TaskManager {
             subTasks.put(subTask.getId(), subTask);
             epic.setSubTaskIds(nextId);
             updateEpicStatus(epic);
-            updateEpicTime(epic);
+            //при добавлении updateEpicTime(epic) программа не корректно работает, в части записи задач в файл.
         }
         return subTask.getId();
     }
@@ -65,8 +65,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateSimpleTask(SimpleTask simpleTask) {
         if (simpleTasks.containsKey(simpleTask.getId())) {
-            simpleTasks.put(simpleTask.getId(), simpleTask);
             validateTask(simpleTask);
+            simpleTasks.put(simpleTask.getId(), simpleTask);
             addPrioritized(simpleTask);
         }
     }
@@ -80,10 +80,10 @@ public class InMemoryTaskManager implements TaskManager {
         if (newSubTask.getEpicId() != subTasks.get(newSubTask.getId()).getEpicId()) {
             return;
         }
+        validateTask(newSubTask);
         subTasks.replace(newSubTask.getId(), newSubTask);
         updateEpicStatus(epic);
         updateEpicTime(epic);
-        validateTask(newSubTask);
         addPrioritized(newSubTask);
     }
 
@@ -102,6 +102,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void delSimpleTaskById(int nextId) {
         simpleTasks.remove(nextId);
         historyManager.remove(nextId);
+        prioritized.remove(simpleTasks.get(nextId));
     }
 
     @Override
@@ -136,6 +137,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void clearAllTasks() {
         for (Integer id : simpleTasks.keySet()) {
             historyManager.remove(id);
+            prioritized.remove(simpleTasks.get(id));
         }
         simpleTasks.clear();
     }
@@ -144,6 +146,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void clearAllEpics() {
         for (Integer id : subTasks.keySet()) {
             historyManager.remove(id);
+            prioritized.remove(epics.get(id));
         }
         for (Integer id : epics.keySet()) {
             historyManager.remove(id);
@@ -158,6 +161,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (Epic epic : epics.values()) {
             for (int subTaskId : epic.getSubTaskIds()) {
                 historyManager.remove(subTaskId);
+                updateEpicTime(epic);
             }
             epic.remAllSubTasks();
             updateEpicStatus(epic);
@@ -201,9 +205,12 @@ public class InMemoryTaskManager implements TaskManager {
     private void updateEpicTime(Epic epic) {
         List<Task> subTaskList = getPrioritizedTasks().stream()
                 .filter(task -> task.getType().equals(Tasks.SUBTASK))
-                .filter(task -> ((SubTask) task).getEpicId() == epic.getId())
+                .filter(task -> ((SubTask) task).getEpicId() == epic.getSubTaskIds().get(epic.getId()))
                 .toList();
         if (subTaskList.isEmpty()) {
+            epic.setStartTime(null);
+            epic.setEndTime(null);
+            epic.setDuration(null);
             return;
         }
 
@@ -318,15 +325,15 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private boolean checkTimeOverlay(Task task1, Task task2) {
-        return !task1.getEndTime().isBefore(task2.getStartTime()) &&
-                !task1.getStartTime().isAfter(task2.getEndTime());
+        return !(task1.getEndTime().isBefore(task2.getStartTime()) ||
+                task1.getStartTime().isAfter(task2.getEndTime()));
     }
 
     private void validateTask(Task task) {
         if (task == null || task.getStartTime() == null) return;
         List<Task> taskList = getPrioritizedTasks();
         for (Task listTask : taskList) {
-            if (listTask == task) {
+            if (listTask.getId() == task.getId()) {
                 continue;
             }
             boolean taskOverlay = checkTimeOverlay(task, listTask);
