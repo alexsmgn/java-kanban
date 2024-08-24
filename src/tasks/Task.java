@@ -1,5 +1,6 @@
 package tasks;
 
+import manager.Tasks;
 import status.Status;
 
 import java.time.Duration;
@@ -17,7 +18,7 @@ public class Task {
     public Task(String title, String target) {
         this.title = title;
         this.target = target;
-        status = status.NEW;
+        status = Status.NEW;
     }
 
     public Task(String target, String title, Status status) {
@@ -73,6 +74,7 @@ public class Task {
     public void setStatus(Status status) {
         this.status = status;
     }
+
 
     public Tasks getType() {
         return Tasks.SIMPLETASK;

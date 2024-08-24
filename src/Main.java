@@ -1,9 +1,12 @@
+import exeptions.ManagerSaveException;
 import manager.FileBackedTaskManager;
 import tasks.SimpleTask;
 import tasks.Epic;
 import tasks.SubTask;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -11,19 +14,17 @@ public class Main {
 
     public static void main(String[] args) {
 
-        File file = new File("Tasks.csv");
-        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(file);
 
+        File file = new File("Tasks.csv");
+
+        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(file);
 
         SimpleTask simpleTask1 = new SimpleTask("Работа на дому", "программирование с 19:00 - 23:00");
         simpleTask1.setStartTime(LocalDateTime.now());
         simpleTask1.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.addTask(simpleTask1);
 
-
         Epic epic1 = new Epic("Ремонт в квартире", "Ремонт ванной комнаты");
-        epic1.setStartTime(LocalDateTime.now().plusHours(2));
-        epic1.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.addEpic(epic1);
 
         SubTask subTask1 = new SubTask("Установить полотенцесушитель", "организация отопления", 2);

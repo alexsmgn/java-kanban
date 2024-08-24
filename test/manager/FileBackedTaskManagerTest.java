@@ -31,9 +31,9 @@ public class FileBackedTaskManagerTest extends TaskManagerTests<FileBackedTaskMa
 
         subTask.setStartTime(LocalDateTime.of(2024, 8, 18, 17, 0));
         subTask.setDuration(Duration.ofMinutes(15));
-        fileBackedTaskManager.addSubTask(subTask); // Инициализируем менеджер и добавляем задачи в тестовый файл
+        fileBackedTaskManager.addSubTask(subTask);
 
-        assertEquals(1, fileBackedTaskManager.simpleTasks.size()); // проверяем, добавились ли задачи в списки
+        assertEquals(1, fileBackedTaskManager.simpleTasks.size());
         assertEquals(1, fileBackedTaskManager.epics.size());
         assertEquals(1, fileBackedTaskManager.subTasks.size());
 

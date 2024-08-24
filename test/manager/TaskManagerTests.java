@@ -152,5 +152,4 @@ abstract class TaskManagerTests<T extends TaskManager> {
         assertEquals(taskManager.getPrioritizedTasks(), List.of(subTask, simpleTask));
     }
 
-
 }

@@ -103,7 +103,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 fileLoader.addPrioritized(task);
             }
         } catch (IOException e) {
-             throw new ManagerSaveException("Не удалось загрузить файл");
+            throw new ManagerSaveException("Не удалось загрузить файл");
         }
         return fileLoader;
     }

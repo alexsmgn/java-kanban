@@ -57,6 +57,7 @@ public class InMemoryTaskManager implements TaskManager {
             subTasks.put(subTask.getId(), subTask);
             epic.setSubTaskIds(nextId);
             updateEpicStatus(epic);
+            updateEpicTime(epic);
             //при добавлении updateEpicTime(epic) программа не корректно работает, в части записи задач в файл.
         }
         return subTask.getId();
@@ -205,8 +206,9 @@ public class InMemoryTaskManager implements TaskManager {
     private void updateEpicTime(Epic epic) {
         List<Task> subTaskList = getPrioritizedTasks().stream()
                 .filter(task -> task.getType().equals(Tasks.SUBTASK))
-                .filter(task -> ((SubTask) task).getEpicId() == epic.getSubTaskIds().get(epic.getId()))
+                .filter(task -> ((SubTask) task).getEpicId() == epic.getId())
                 .toList();
+
         if (subTaskList.isEmpty()) {
             epic.setStartTime(null);
             epic.setEndTime(null);
@@ -223,8 +225,9 @@ public class InMemoryTaskManager implements TaskManager {
         LocalDateTime endTime = subTaskList.getLast().getEndTime();
 
         epic.setStartTime(startTime);
-        epic.setEndTime(endTime);
         epic.setDuration(duration);
+        epic.setEndTime(endTime);
+
     }
 
     @Override
