@@ -11,8 +11,6 @@ public class Epic extends Task {
 
     private final ArrayList<Integer> subTaskIds = new ArrayList<>();
     private LocalDateTime endTime;
-    private LocalDateTime startTime;
-    private Duration duration;
 
     public Epic(String target, String title) {
         super(title, target);
@@ -61,23 +59,4 @@ public class Epic extends Task {
         this.endTime = endTime;
     }
 
-    @Override
-    public Duration getDuration() {
-        return duration;
-    }
-
-    @Override
-    public void setDuration(Duration duration) {
-        this.duration = duration;
-    }
-
-    @Override
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    @Override
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
 }
