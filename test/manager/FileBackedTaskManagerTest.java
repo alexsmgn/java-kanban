@@ -1,41 +1,39 @@
 package manager;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import status.Status;
-import tasks.SimpleTask;
-import tasks.Epic;
-import tasks.SubTask;
 
 import java.io.File;
-import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FileBackedTaskManagerTest {
+public class FileBackedTaskManagerTest extends TaskManagerTests<FileBackedTaskManager> {
 
     File file;
-    SimpleTask simpleTask;
-    Epic epic;
-    SubTask subTask;
 
-    @BeforeEach
-    void beforeEach() throws IOException {
-        file = file.createTempFile("Tasks", ".csv");
-        simpleTask = new SimpleTask("target", "title", Status.IN_PROGRESS);
-        epic = new Epic("target", "title", Status.IN_PROGRESS);
-        subTask = new SubTask("target", "title", Status.IN_PROGRESS, 2);
+    FileBackedTaskManagerTest() throws Exception {
+        file = File.createTempFile("Tasks", ".csv");
+        taskManager = new FileBackedTaskManager(file);
     }
 
     @Test
     void loadFromFile() {
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file);
 
+        simpleTask.setStartTime(LocalDateTime.of(2024, 8, 18, 15, 0));
+        simpleTask.setDuration(Duration.ofMinutes(15));
         fileBackedTaskManager.addTask(simpleTask);
-        fileBackedTaskManager.addEpic(epic);
-        fileBackedTaskManager.addSubTask(subTask); // Инициализируем менеджер и добавляем задачи в тестовый файл
 
-        assertEquals(1, fileBackedTaskManager.simpleTasks.size()); // проверяем, добавились ли задачи в списки
+        epic.setStartTime(LocalDateTime.of(2024, 8, 18, 16, 0));
+        epic.setDuration(Duration.ofMinutes(15));
+        fileBackedTaskManager.addEpic(epic);
+
+        subTask.setStartTime(LocalDateTime.of(2024, 8, 18, 17, 0));
+        subTask.setDuration(Duration.ofMinutes(15));
+        fileBackedTaskManager.addSubTask(subTask);
+
+        assertEquals(1, fileBackedTaskManager.simpleTasks.size());
         assertEquals(1, fileBackedTaskManager.epics.size());
         assertEquals(1, fileBackedTaskManager.subTasks.size());
 
@@ -44,5 +42,7 @@ public class FileBackedTaskManagerTest {
         assertEquals(fileBackedTaskManager.printAllSimpleTasks(), fileLoader.printAllSimpleTasks());
         assertEquals(fileBackedTaskManager.printAllEpics(), fileLoader.printAllEpics());
         assertEquals(fileBackedTaskManager.printAllSubTasks(), fileLoader.printAllSubTasks());
+
+        assertEquals(fileBackedTaskManager.getPrioritizedTasks(), fileLoader.getPrioritizedTasks());
     }
 }

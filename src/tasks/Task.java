@@ -1,7 +1,10 @@
 package tasks;
 
+import manager.Tasks;
 import status.Status;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -9,11 +12,13 @@ public class Task {
     private String title;
     private String target;
     private Status status;
+    private Duration duration;
+    private LocalDateTime startTime;
 
     public Task(String title, String target) {
         this.title = title;
         this.target = target;
-        status = status.NEW;
+        status = Status.NEW;
     }
 
     public Task(String target, String title, Status status) {
@@ -22,11 +27,13 @@ public class Task {
         this.target = target;
     }
 
-    public Task(int id, String title, Status status, String target) {
+    public Task(int id, String title, Status status, String target, LocalDateTime startTime, Duration duration) {
         this.id = id;
         this.title = title;
         this.status = status;
         this.target = target;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
     public Task(String title, Status status, String target) {
@@ -68,8 +75,32 @@ public class Task {
         this.status = status;
     }
 
+
     public Tasks getType() {
         return Tasks.SIMPLETASK;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        if (duration == null) {
+            return startTime;
+        }
+        return startTime.plus(duration);
     }
 
     @Override

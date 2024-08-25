@@ -1,19 +1,19 @@
 package tasks;
 
+import manager.Tasks;
 import status.Status;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class SimpleTask extends Task {
 
-    public SimpleTask(String title, String target) {
-        super(title, target);
+    public SimpleTask(String target, String title) {
+        super(target, title);
     }
 
-    public SimpleTask(int id, String title, Status status, String target) {
-        super(id, title, status, target);
-    }
-
-    public SimpleTask(String target, String title, Status status) {
-        super(target, title, status);
+    public SimpleTask(int id, String title, Status status, String target, LocalDateTime startTime, Duration duration) {
+        super(id, title, status, target, startTime, duration);
     }
 
     @Override
