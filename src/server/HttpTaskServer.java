@@ -2,22 +2,16 @@ package server;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import manager.TaskManager;
 import server.adapters.DurationAdapter;
 import server.adapters.LocalDataTimeAdapter;
 import server.handlers.*;
-import tasks.Epic;
-import tasks.SimpleTask;
-import tasks.SubTask;
-import tasks.Task;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class HttpTaskServer {
 
