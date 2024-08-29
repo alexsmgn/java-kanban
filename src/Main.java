@@ -1,50 +1,55 @@
 import manager.FileBackedTaskManager;
+import manager.Managers;
+import manager.TaskManager;
+import server.HttpTaskServer;
 import tasks.SimpleTask;
 import tasks.Epic;
 import tasks.SubTask;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-
-        File file = new File("Tasks.csv");
-
-        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(file);
+        TaskManager taskManager = Managers.getDefault();
 
         SimpleTask simpleTask1 = new SimpleTask("Работа на дому", "программирование с 19:00 - 23:00");
         simpleTask1.setStartTime(LocalDateTime.now());
         simpleTask1.setDuration(Duration.ofMinutes(15));
-        fileBackedTaskManager.addTask(simpleTask1);
+        taskManager.addTask(simpleTask1);
 
         Epic epic1 = new Epic("Ремонт в квартире", "Ремонт ванной комнаты");
-        fileBackedTaskManager.addEpic(epic1);
+        taskManager.addEpic(epic1);
 
         SubTask subTask1 = new SubTask("Установить полотенцесушитель", "организация отопления", 2);
         subTask1.setStartTime(LocalDateTime.now().plusHours(4));
         subTask1.setDuration(Duration.ofMinutes(15));
-        fileBackedTaskManager.addSubTask(subTask1);
+        taskManager.addSubTask(subTask1);
 
         SubTask subTask2 = new SubTask("Установить раковину", "организация зоны для умывания", 2);
         subTask2.setStartTime(LocalDateTime.now().plusHours(6));
         subTask2.setDuration(Duration.ofMinutes(15));
-        fileBackedTaskManager.addSubTask(subTask2);
+        taskManager.addSubTask(subTask2);
 
-        System.out.println(fileBackedTaskManager.printAllSimpleTasks());
-        System.out.println(fileBackedTaskManager.printAllEpics());
-        System.out.println(fileBackedTaskManager.printAllSubTasks());
+        System.out.println(taskManager.printAllSimpleTasks());
+        System.out.println(taskManager.printAllEpics());
+        System.out.println(taskManager.printAllSubTasks());
 
-        SimpleTask simpleTask2 = new SimpleTask("Работы на дому", "програмирование");
-        simpleTask2.setId(1);
-        simpleTask2.setStartTime(LocalDateTime.now().plusHours(10));
-        simpleTask2.setDuration(Duration.ofMinutes(15));
-        fileBackedTaskManager.updateSimpleTask(simpleTask2);
+        HttpTaskServer server = new HttpTaskServer(taskManager);
+        server.start();
+        //server.stop();
+
 
         /*
+
+         File file = new File("Tasks.csv");
+
+        FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFromFile(file);
+
         TaskManager taskManager = Managers.getDefault();
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
