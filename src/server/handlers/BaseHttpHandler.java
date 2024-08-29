@@ -26,32 +26,32 @@ public abstract class BaseHttpHandler implements HttpHandler {
         GET, GET_BY_ID, GET_SUB_BY_EPIC_ID, POST, POST_BY_ID, DELETE_BY_ID, UNKNOWN
     }
 
-    BaseHttpHandler (TaskManager taskManager, Gson gson) {
+    BaseHttpHandler(TaskManager taskManager, Gson gson) {
         this.taskManager = taskManager;
         this.gson = gson;
     }
 
     private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
-    protected Endpoints getEndpoint (HttpExchange exchange) {
+    protected Endpoints getEndpoint(HttpExchange exchange) {
         String[] partPath = exchange.getRequestURI().getPath().split("/");
         String requestMethod = exchange.getRequestMethod();
 
         switch (requestMethod) {
             case "GET":
-                if(partPath.length == 3) {
+                if (partPath.length == 3) {
                     return Endpoints.GET_BY_ID;
                 } else if (partPath.length == 5 && partPath[1].equals("SUB")) {
                     return Endpoints.GET_SUB_BY_EPIC_ID;
                 }
                 return Endpoints.GET;
             case "POST":
-                if(partPath.length == 3) {
+                if (partPath.length == 3) {
                     return Endpoints.POST_BY_ID;
                 }
                 return Endpoints.POST;
             case "DELETE":
-                if(partPath.length == 3) {
+                if (partPath.length == 3) {
                     return Endpoints.DELETE_BY_ID;
                 }
             default:
@@ -61,7 +61,7 @@ public abstract class BaseHttpHandler implements HttpHandler {
 
     protected void writeResponse(HttpExchange exchange, int responseCode, String responseString) throws IOException {
         exchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
-        try (OutputStream os = exchange.getResponseBody()){
+        try (OutputStream os = exchange.getResponseBody()) {
             exchange.sendResponseHeaders(responseCode, 0);
             os.write(responseString.getBytes(DEFAULT_CHARSET));
         }
@@ -76,7 +76,7 @@ public abstract class BaseHttpHandler implements HttpHandler {
         exchange.close();
     }
 
-    protected void sendNotFount(HttpExchange exchange)throws IOException {
+    protected void sendNotFount(HttpExchange exchange) throws IOException {
         exchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
         exchange.sendResponseHeaders(404, 0);
         exchange.close();
@@ -89,7 +89,7 @@ public abstract class BaseHttpHandler implements HttpHandler {
     }
 
     protected String taskFromRequestBody(HttpExchange exchange) throws IOException {
-        try (InputStream is = exchange.getRequestBody()){
+        try (InputStream is = exchange.getRequestBody()) {
             return new String(is.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             writeResponse(exchange, 500, "");
