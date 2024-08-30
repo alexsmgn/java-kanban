@@ -29,7 +29,8 @@ public class SimpleHandler extends BaseHttpHandler {
                 case POST:
                     simpleTask = gson.fromJson(taskFromRequestBody(exchange), tasks.SimpleTask.class);
                     taskManager.addTask(simpleTask);
-                    writeResponse(exchange, 200, "Задача успешно добавлена");
+                    writeResponse(exchange, 200, "Задача под номером " + simpleTask.getId() +
+                            " успешно добавлена");
                     break;
                 case POST_BY_ID:
                     simpleTask = gson.fromJson(taskFromRequestBody(exchange), tasks.SimpleTask.class);

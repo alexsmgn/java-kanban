@@ -32,7 +32,8 @@ public class EpicHandler extends BaseHttpHandler {
                 case POST:
                     epic = gson.fromJson(taskFromRequestBody(exchange), tasks.Epic.class);
                     taskManager.addEpic(epic);
-                    writeResponse(exchange, 200, "Задача успешно добавлена");
+                    writeResponse(exchange, 200, "Задача под номером " + epic.getId()
+                            + " успешно добавлена");
                     break;
                 case POST_BY_ID:
                     epic = gson.fromJson(taskFromRequestBody(exchange), tasks.Epic.class);

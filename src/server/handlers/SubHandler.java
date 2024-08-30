@@ -29,7 +29,8 @@ public class SubHandler extends BaseHttpHandler {
                 case POST:
                     subTask = gson.fromJson(taskFromRequestBody(exchange), tasks.SubTask.class);
                     taskManager.addSubTask(subTask);
-                    writeResponse(exchange, 200, "Задача успешно добавлена");
+                    writeResponse(exchange, 200, "Задача под номером " + subTask.getId() +
+                            " успешно добавлена");
                     break;
                 case POST_BY_ID:
                     subTask = gson.fromJson(taskFromRequestBody(exchange), tasks.SubTask.class);
